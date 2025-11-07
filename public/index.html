@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Automated Bot</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://i.imgur.com/BNKq0fl.jpeg" type="image/jpeg" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <img id="background-pic" src="https://img1.picmix.com/output/stamp/normal/3/7/5/5/2195573_939df.gif">
+    <img id="icon-mainn" src="https://i.imgur.com/dleGZwW.jpeg">
+    <img id="active-status" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1TS0JJp5ClJ5lTn-OBv9y461HneWyQco9lx5kVwT6d5i8KTm7-zer9ok&s=10"></img>
+    </img>
+    </img>
+    <audio class="play-background" autoplay loop>
+        <source src="ipagpatawadmo.mp3" type="audio/mpeg">
+    </audio>
+    <h1 class="name">Arı</h1>
+    <img class="verified-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE7wBhg3kHUcSznRYkGgDzBjGC9BmayaHhngd9iq-KZr24zqMmYSUgk1k1&s=10"></img>
+    </img>
+    <p class="bio"> Hey there! I'll warn you about using this project, your facebook account is possible to get locked, restricted or suspended due to logging in to unknown location, automated behavior etc. use a dummy account. </p>
+    <a class="follow-button" href="https://www.facebook.com/61577110900436">View profile</a>
+    <a class="page-button" href="https://myportfilo2023.netlify.app">View info</a>
+    <div class="container">
+      <h2 class="subtitle">Facebook Appstate</h2>
+      <form id="json-form" onsubmit="submitForm(event)">
+        <textarea id="json-data" placeholder="Paste your appstate here"></textarea>
+      </form>
+
+      <div id="listOfCommands">
+        <h2 class="subtitle">Select your commands</h2>
+        <button class="btn" onclick="selectAllCommands()">Select all commands</button>
+      </div>
+
+      <div id="listOfCommandsEvent">
+        <h2 class="subtitle">Select your event commands</h2>
+        <button class="btn" onclick="selectAllEvents()">Select all events</button>
+      </div>
+
+      <div id="prefixOfCommands">
+        <h2 class="subtitle">Enter prefix (optional)</h2>
+        <input type="text" id="inputOfPrefix" />
+      </div>
+
+      <div id="adminOfCommands">
+        <h2 class="subtitle">Enter UID (important)</h2>
+        <input type="text" id="inputOfAdmin" />
+      </div>
+
+      <label class="terms-check">
+        <input type="checkbox" id="agreeCheckbox" /> I have read and agree to the Terms and Conditions.
+      </label>
+
+      <div class="text-center">
+  <button class="btn submit-btn" onclick="State()" disabled id="submitButton">
+    <i class="fa-solid fa-rocket" style="margin-right: 8px;"></i> Submit
+  </button>
+</div>
+    </div>
+      
+    <div id="audio-container" style="display:none;"></div>
+
+    <div id="result" class="container text-center" style="display: none;"></div>
+
+    <footer class="footer">
+      <p>Time: <span id="time"></span></p>
+      <p>Ping: <span id="ping"></span></p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+  const backgroundm = document.querySelector(".play-background");
+
+  window.onload = function() {
+    Swal.fire({
+      title: `<p style="font-size: 15px; margin-top: -15px; margin-bottom: -10px;">ARI AUTOBOT</p>`,
+      icon: "info",
+      html: `<p style="font-size: 12px;">This project is not for sale, you can use it for free.</p>`,
+      background: '#1e1e1e',
+      color: 'white',
+      confirmButtonColor: 'transparent',
+      confirmButtonText: `<i class="fa fa-thumbs-up" style="color:white;"></i> Okay`
+    }).then(() => {
+      backgroundm.play();
+    });
+  };
+</script>
+  </body>
+</html>
