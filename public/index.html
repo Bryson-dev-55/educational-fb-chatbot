@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Automated Bot</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://i.imgur.com/BNKq0fl.jpeg" type="image/jpeg" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Header Section -->
+      <header class="header">
+        <div class="cover-photo">
+          <img id="background-pic" src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyaWlyYXQ3YjhmNGtha3Q2M3ZhbGJhNmJhYTh1NHppd3VvbXNqZXV6cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4H3Ii5eLChYul9p7NL/giphy.gif" alt="Cover Photo">
+        </div>
+        <div class="profile-section">
+          <div class="profile-image-container">
+            <img id="icon-mainn" src="https://i.imgur.com/hu1lTNr.jpeg" alt="Profile">
+            <div id="active-status" class="status-indicator"></div>
+          </div>
+          <div class="profile-info">
+            <div class="name-container">
+              <h1 class="name">Bryson</h1>
+              <img class="verified-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE7wBhg3kHUcSznRYkGgDzBjGC9BmayaHhngd9iq-KZr24zqMmYSUgk1k1&s=10" alt="Verified">
+            </div>
+            <p class="bio">Welcome to Bryson's Automated Bot! This powerful tool helps you automate your Facebook tasks efficiently. Remember to use a dummy account as your main account might get restricted due to automated behavior. Enjoy the features! 🚀</p>
+            <div class="action-buttons">
+              <a class="follow-button" href="https://www.facebook.com/61577110900436">
+                <i class="fab fa-facebook"></i> View profile
+              </a>
+              <a class="page-button" href="https://myportfilo2023.netlify.app">
+                <i class="fas fa-info-circle"></i> View info
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="container">
+          <h2 class="subtitle">Facebook Appstate</h2>
+          <form id="json-form" onsubmit="submitForm(event)">
+            <div class="input-container">
+              <textarea id="json-data" placeholder="Paste your appstate here"></textarea>
+            </div>
+          </form>
+
+          <div class="commands-section">
+            <div class="commands-group">
+              <div class="commands-header">
+                <h2 class="subtitle">Select your commands</h2>
+                <button class="btn btn-outline" onclick="selectAllCommands()">
+                  <i class="fas fa-check-double"></i> Select all
+                </button>
+              </div>
+              <div id="listOfCommands" class="commands-list"></div>
+            </div>
+
+            <div class="commands-group">
+              <div class="commands-header">
+                <h2 class="subtitle">Select your event commands</h2>
+                <button class="btn btn-outline" onclick="selectAllEvents()">
+                  <i class="fas fa-check-double"></i> Select all
+                </button>
+              </div>
+              <div id="listOfCommandsEvent" class="commands-list"></div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="input-group">
+              <label for="inputOfPrefix">Enter prefix (optional)</label>
+              <input type="text" id="inputOfPrefix" />
+            </div>
+
+            <div class="input-group">
+              <label for="inputOfAdmin">Enter UID (important)</label>
+              <input type="text" id="inputOfAdmin" />
+            </div>
+          </div>
+
+          <div class="terms-section">
+            <input type="checkbox" id="agreeCheckbox" />
+            <label for="agreeCheckbox" class="check-box"></label>
+            <span class="terms-text">I have read and agree to the Terms and Conditions.</span>
+          </div>
+
+          <div class="submit-section">
+            <button class="btn btn-primary submit-btn" onclick="State()" disabled id="submitButton">
+              <i class="fa-solid fa-rocket"></i> Launch Bot
+            </button>
+          </div>
+        </div>
+        
+        <div id="result" class="result-container" style="display: none;"></div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-stats">
+          <div class="stat">
+            <i class="fas fa-clock"></i>
+            <span>Time: <span id="time"></span></span>
+          </div>
+          <div class="stat">
+            <i class="fas fa-signal"></i>
+            <span>Ping: <span id="ping"></span></span>
+          </div>
+        </div>
+        <p class="footer-text">Bryson's Automated Bot &copy; 2023</p>
+      </footer>
+    </div>
+
+    <!-- Audio Player (Hidden) -->
+    <audio id="background-music" autoplay loop>
+      Your browser does not support the audio element.
+    </audio>
+
+    <script src="script.js"></script>
+    <script>
+      // List of available MP3 songs
+      const songs = [
+        { name: "Slide Do Ultra Instinto", file: "music/Slide Do Ultra Instinto.mp3" },
+        { name: "AUTOMOTIVO DECORADA - Super Slowed", file: "music/AUTOMOTIVO DECORADA - Super Slowed.mp3" },
+        { name: "TOKYOPHILE - AUTOMOTIVO BAYSIDE 2.0", file: "music/TOKYOPHILE - AUTOMOTIVO BAYSIDE 2.0 [Rally House].mp3" },
+        { name: "LXNGVX, Maestro Chives - Royalty Funk", file: "music/LXNGVX, Maestro Chives - Royalty Funk  NCS - Copyright Free Music.mp3" },
+        { name: "LXNGVX - BRUXO FANTASMA", file: "music/LXNGVX - BRUXO FANTASMA (Super Slowed).mp3" },
+        { name: "DJ FKU - WINTER ARC FUNK", file: "music/DJ FKU - WINTER ARC FUNK.mp3" }
+      ];
+
+      function getRandomSong() {
+        const randomIndex = Math.floor(Math.random() * songs.length);
+        return songs[randomIndex];
+      }
+
+      function playRandomSong() {
+        const audio = document.getElementById('background-music');
+        const randomSong = getRandomSong();
+        
+        audio.src = randomSong.file;
+        
+        // Auto-play the music
+        audio.play().catch(error => {
+          console.log('Auto-play was prevented:', error);
+        });
+      }
+
+      window.onload = function() {
+        // Show SweetAlert first
+        Swal.fire({
+          title: `<p style="font-size: 24px; margin-bottom: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">🚀 WELCOME TO BRYSON'S BOT 🚀</p>`,
+          html: `<div style="text-align: center;">
+                  <p style="font-size: 16px; margin-bottom: 10px; color: #e9ecef;">Experience the ultimate automation power with Bryson's Advanced Bot System!</p>
+                  <p style="font-size: 14px; color: #6c757d; margin-bottom: 15px;">🔒 Secure • ⚡ Fast • 🎯 Efficient</p>
+                  <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; border-left: 4px solid #0d6efd;">
+                    <p style="font-size: 12px; color: #adb5bd; margin: 0;">💡 <strong>Pro Tip:</strong> Always use a dummy account to avoid restrictions</p>
+                  </div>
+                </div>`,
+          icon: "success",
+          background: '#1a1a2e',
+          color: 'white',
+          confirmButtonColor: '#0d6efd',
+          confirmButtonText: `<i class="fa fa-rocket" style="margin-right: 8px;"></i> Launch Experience`,
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
+        }).then(() => {
+          // Play random song after user clicks OK
+          playRandomSong();
+        });
+
+        // Also try to play immediately
+        setTimeout(playRandomSong, 100);
+      };
+
+      // Play next random song when current ends
+      document.getElementById('background-music').addEventListener('ended', function() {
+        playRandomSong();
+      });
+    </script>
+  </body>
+</html>
