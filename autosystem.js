@@ -4,7 +4,7 @@ module.exports = async ({ api }) => {
   const configCustom = {
     autosetbio: {
       status: true,
-      bio: `boWrat quh nahmamagA 😓💔`
+      bio: `just a friendly chatbot, ready to chat or assist whenever you need!`
     },
     greetings: {
       status: true,
