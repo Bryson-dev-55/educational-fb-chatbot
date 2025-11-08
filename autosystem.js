@@ -198,4 +198,4 @@ module.exports = async ({ api }) => {
   keepAlive(configCustom.keepAlive);
 
   logger("[SYSTEM] Autosystem is running...");
-ife.exports
+};
