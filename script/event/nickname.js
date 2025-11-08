@@ -2,7 +2,7 @@ let config = {};
 try {
     config = require("../config.json");
 } catch (e) {
-    config.botName = "🤖 | 𝙴𝚌𝚑𝚘 𝙰𝙸";
+    config.botName = "[ + ] 𝗖𝗛𝗔𝗧𝗕𝗢𝗧";
 }
 
 module.exports.config = {
@@ -27,7 +27,7 @@ module.exports.handleEvent = async function ({ api, event }) {
             event.logMessageData.addedParticipants.some(user => user.userFbId === api.getCurrentUserID())
         ) {
             const botID = api.getCurrentUserID();
-            const botName = config.botName || "🤖 | 𝙴𝚌𝚑𝚘 𝙰𝙸";
+            const botName = config.botName || "[ + ] 𝗖𝗛𝗔𝗧𝗕𝗢𝗧";
 
             api.changeNickname(botName, event.threadID, botID, (err) => {
                 if (err) return console.error("❌ Failed to set nickname:", err);
