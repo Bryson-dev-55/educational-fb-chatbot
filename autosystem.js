@@ -9,26 +9,26 @@ module.exports = async ({ api }) => {
     greetings: {
       status: true,
       schedule: [
-        { start: { h: 5, m: 0 }, message: "Good morning everyone! rise and shine ☀️" },
-        { start: { h: 6, m: 0 }, message: "Time for morning stretches! 🧘‍♂️" },
-        { start: { h: 7, m: 0 }, message: "Breakfast time! don't skip it 🍳🥖" },
-        { start: { h: 9, m: 0 }, message: "Keep hustling! productivity vibes  💼" },
-        { start: { h: 11, m: 0 }, message: "Good late morning! Almost lunch 🍲" },
-        { start: { h: 12, m: 0 }, message: "🍲 Lunch time! wag nang kumain yung mga hindi minahal dyan" },
-        { start: { h: 14, m: 0 }, message: "Afternoon vibes! Stay hydrated 🤭" },
-        { start: { h: 15, m: 0 }, message: "Snack time mga bOwraT 🍜" },
-        { start: { h: 17, m: 0 }, message: "Evening is coming! 🌆 Take a deep breath" },
-        { start: { h: 18, m: 0 }, message: "Good evening everyone! 🌇 Time to relax" },
-        { start: { h: 19, m: 0 }, message: "🍛 Dinner time! Eat well babies 🍗" },
-        { start: { h: 21, m: 0 }, message: "Night vibes! 🌙 Almost bedtime 😴" },
-        { start: { h: 22, m: 0 }, message: "10:00 pm, mag rerelapse na naman yung tanga dyan. 🥀" },
-        { start: { h: 0, m: 0 }, message: "12 na tama na kakarelapse 💓" },
-        { start: { h: 2, m: 0 }, message: "Late night alert! 🦉 Don't stay up too long baka pumanaw ka" },
-        { start: { h: 4, m: 0 }, message: "Sunrise is comming 😍🌄" }
+        { start: { h: 5, m: 0 }, timeHeader: "🌅 5:00 AM | Early Morning Verse", emoji: "🌅" },
+        { start: { h: 6, m: 0 }, timeHeader: "☀️ 6:00 AM | Morning Verse", emoji: "☀️" },
+        { start: { h: 7, m: 0 }, timeHeader: "🍳 7:00 AM | Breakfast Verse", emoji: "🍳" },
+        { start: { h: 9, m: 0 }, timeHeader: "💼 9:00 AM | Work Verse", emoji: "💼" },
+        { start: { h: 11, m: 0 }, timeHeader: "🌤️ 11:00 AM | Late Morning Verse", emoji: "🌤️" },
+        { start: { h: 12, m: 0 }, timeHeader: "🍱 12:00 PM | Lunch Time Verse", emoji: "🍱" },
+        { start: { h: 14, m: 0 }, timeHeader: "☕️ 2:00 PM | Afternoon Verse", emoji: "☕️" },
+        { start: { h: 15, m: 0 }, timeHeader: "🍎 3:00 PM | Snack Time Verse", emoji: "🍎" },
+        { start: { h: 17, m: 0 }, timeHeader: "🌆 5:00 PM | Evening Verse", emoji: "🌆" },
+        { start: { h: 18, m: 0 }, timeHeader: "🌇 6:00 PM | Sunset Verse", emoji: "🌇" },
+        { start: { h: 19, m: 0 }, timeHeader: "🍛 7:00 PM | Dinner Verse", emoji: "🍛" },
+        { start: { h: 21, m: 0 }, timeHeader: "🌙 9:00 PM | Night Verse", emoji: "🌙" },
+        { start: { h: 22, m: 0 }, timeHeader: "💤 10:00 PM | Bedtime Verse", emoji: "💤" },
+        { start: { h: 0, m: 0 }, timeHeader: "🌌 12:00 AM | Midnight Verse", emoji: "🌌" },
+        { start: { h: 2, m: 0 }, timeHeader: "🦉 2:00 AM | Late Night Verse", emoji: "🦉" },
+        { start: { h: 4, m: 0 }, timeHeader: "🌄 4:00 AM | Pre-Dawn Verse", emoji: "🌄" }
       ],
-      weekend: "🎉 Happy weekend! Chill and enjoy your freedom 🏖️🍻",
-      monday: "💼 Monday grind! Start the week strong 💪🔥",
-      friday: "🎶 Friday night vibes! End the week with good energy, kasi wala nang pasok bukas 🕺💃"
+      weekend: "🎉 Weekend Blessing | Saturday/Sunday 9:00 AM",
+      monday: "💼 Monday Inspiration | 8:00 AM",
+      friday: "🎶 Friday Reflection | 8:00 PM"
     },
     acceptPending: { status: false, time: 10 },
     keepAlive: { status: true, interval: 1000 * 60 * 10 }
@@ -44,6 +44,50 @@ module.exports = async ({ api }) => {
     } catch (error) {
       logger(`[setbio] Unexpected error: ${error}`);
     }
+  }
+
+  // Function to get random Bible verse
+  async function getRandomBibleVerse() {
+    try {
+      const response = await fetch('https://api.ccprojectsapis-jonell.gleeze.com/api/randomverse');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      return {
+        reference: data.reference,
+        text: data.text.trim(),
+        translation: data.translation_name
+      };
+    } catch (error) {
+      logger(`[bible-verse] Error fetching verse: ${error}`);
+      // Fallback verse in case of error
+      return {
+        reference: "John 3:16",
+        text: "For God so loved the world, that he gave his one and only Son, that whoever believes in him should not perish, but have eternal life.",
+        translation: "World English Bible"
+      };
+    }
+  }
+
+  // Function to format message with time header
+  function formatVerseMessage(timeHeader, verse) {
+    return `${timeHeader} 📖\n\n${verse.reference}\n\n"${verse.text}"\n\n- ${verse.translation}`;
+  }
+
+  // Function to get day-specific header
+  function getDaySpecificHeader(weekday, hour, minute, config) {
+    const timeStr = `${hour}:${minute.toString().padStart(2, '0')} ${hour >= 12 ? 'PM' : 'AM'}`;
+    
+    if ((weekday === "Saturday" || weekday === "Sunday") && hour === 9 && minute === 0) {
+      return `🎉 ${weekday} Blessing | ${timeStr}`;
+    } else if (weekday === "Monday" && hour === 8 && minute === 0) {
+      return `💼 Monday Inspiration | ${timeStr}`;
+    } else if (weekday === "Friday" && hour === 20 && minute === 0) {
+      return `🎶 Friday Reflection | ${timeStr}`;
+    }
+    return null;
   }
   
   async function greetings(config) {
@@ -68,43 +112,51 @@ module.exports = async ({ api }) => {
       const nowTotal = hour * 60 + minute;
 
       const match = config.schedule.find(s => {
-      const startTotal = s.start.h * 60 + s.start.m;
-      return nowTotal === startTotal || nowTotal === startTotal + 1;
+        const startTotal = s.start.h * 60 + s.start.m;
+        return nowTotal === startTotal || nowTotal === startTotal + 1;
       });
-      if (match && !sentToday.has(match.message)) {
+      
+      if (match && !sentToday.has(match.timeHeader)) {
         try {
+          const bibleVerse = await getRandomBibleVerse();
+          const formattedMessage = formatVerseMessage(match.timeHeader, bibleVerse);
+          
           const threads = await api.getThreadList(100, null, ["INBOX"]);
           const groupThreads = threads.filter(t => t.isGroup);
+          
           for (const thread of groupThreads) {
-            api.sendMessage(match.message, thread.threadID);
+            api.sendMessage(formattedMessage, thread.threadID);
           }
-          logger(`[greetings] Sent to ${groupThreads.length} groups: ${match.message}`);
-          sentToday.add(match.message);
+          logger(`[greetings] Sent Bible verse to ${groupThreads.length} groups: ${match.timeHeader}`);
+          sentToday.add(match.timeHeader);
         } catch (err) {
           logger("[greetings] Error sending to groups:", err);
         }
       }
 
       const weekday = now.toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Manila" });
-      if (!sentToday.has(`day-${weekday}-${hour}-${minute}`)) {
+      const daySpecificKey = `day-${weekday}-${hour}-${minute}`;
+      
+      if (!sentToday.has(daySpecificKey)) {
         try {
-          const threads = await api.getThreadList(100, null, ["INBOX"]);
-          const groupThreads = threads.filter(t => t.isGroup);
+          const dayHeader = getDaySpecificHeader(weekday, hour, minute, config);
+          if (dayHeader) {
+            const bibleVerse = await getRandomBibleVerse();
+            const formattedMessage = formatVerseMessage(dayHeader, bibleVerse);
+            
+            const threads = await api.getThreadList(100, null, ["INBOX"]);
+            const groupThreads = threads.filter(t => t.isGroup);
 
-     if ((weekday === "Saturday" || weekday === "Sunday") && hour === 9 && minute === 0) {
-         for (const thread of groupThreads) api.sendMessage(config.weekend, thread.threadID);
-         sentToday.add(`day-${weekday}-${hour}-${minute}`);
-       } else if (weekday === "Monday" && hour === 8 && minute === 0) {
-         for (const thread of groupThreads) api.sendMessage(config.monday, thread.threadID);
-         sentToday.add(`day-${weekday}-${hour}-${minute}`);
-       } else if (weekday === "Friday" && hour === 20 && minute === 0) {
-         for (const thread of groupThreads) api.sendMessage(config.friday, thread.threadID);
-         sentToday.add(`day-${weekday}-${hour}-${minute}`);
-       }
-     } catch (err) {
-       logger("[greetings] Error sending weekly/daily greetings:", err);
-       }
-     }
+            for (const thread of groupThreads) {
+              api.sendMessage(formattedMessage, thread.threadID);
+            }
+            logger(`[greetings] Sent ${weekday} verse to ${groupThreads.length} groups: ${dayHeader}`);
+            sentToday.add(daySpecificKey);
+          }
+        } catch (err) {
+          logger("[greetings] Error sending weekly/daily greetings:", err);
+        }
+      }
     }, 1000 * 60); 
   }
 
@@ -146,4 +198,4 @@ module.exports = async ({ api }) => {
   keepAlive(configCustom.keepAlive);
 
   logger("[SYSTEM] Autosystem is running...");
-};
+ife.exports
