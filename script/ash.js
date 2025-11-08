@@ -42,13 +42,13 @@ module.exports.run = async function ({ api, event, args }) {
   if (cmd === "on") {
     autoReplyEnabled = true;
     saveMemory();
-    return api.sendMessage("✅ Ashley auto-reply is now ON, baby 💕", event.threadID, event.messageID);
+    return api.sendMessage("✅ Ashley auto-reply is now ON", event.threadID, event.messageID);
   }
 
   if (cmd === "off") {
     autoReplyEnabled = false;
     saveMemory();
-    return api.sendMessage("❌ Ashley auto-reply is now OFF, babe 😢", event.threadID, event.messageID);
+    return api.sendMessage("❌ Ashley auto-reply is now OFF", event.threadID, event.messageID);
   }
 
   if (cmd === "status") {
@@ -100,13 +100,10 @@ module.exports.handleEvent = async function ({ api, event }) {
       memory[userId] = memory[userId].slice(-10);
     }
 
-    const res = await axios.post("https://ashley-api-2csc.onrender.com/chat", {
-      character: "Ashley",
-      message: event.body,
-      user: userId
-    });
-
-    let reply = res.data.reply || "Baby~ I’m here 😘";
+    // Bagong API endpoint
+    const response = await axios.get(`https://urangkapolka.vercel.app/api/aigf?message=${encodeURIComponent(event.body)}`);
+    
+    let reply = response.data.result || response.data.message || response.data.reply || "Baby~ I'm here 😘";
 
     memory[userId].push({ role: "assistant", content: reply });
     if (memory[userId].length > 10) {
@@ -118,6 +115,6 @@ module.exports.handleEvent = async function ({ api, event }) {
     api.sendMessage(reply, event.threadID, event.messageID);
   } catch (err) {
     console.error("Ashley API error:", err.message);
-    api.sendMessage("Sorry baby 😢 Ashley can’t reply right now.", event.threadID, event.messageID);
+    api.sendMessage("Sorry baby 😢 Ashley can't reply right now.", event.threadID, event.messageID);
   }
 };
